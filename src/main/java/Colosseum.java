@@ -18,6 +18,11 @@ public class Colosseum {
     static final int MAX_HIT_POINTS = 50;
 
     /**
+     * maximum of 3 choices.
+     */
+    static final int THREE = 3;
+
+    /**
      * The maximum number of rounds we will let the Pokemon battle.
      */
     static final int MAX_NUM_ROUNDS = 10;
@@ -103,8 +108,63 @@ public class Colosseum {
      *         <p>
      */
     public static Pokemon buildPokemon() {
-        Pokemon returnPokemon = null;
-        return returnPokemon;
+        Scanner input = new Scanner(System.in);
+        Pokemon returnPokemon = new Pokemon();
+        System.out.println("Select from one of the following Pokemon types:");
+        System.out.println("1 - Electric Pokemon");
+        System.out.println("2 - Fire Pokemon");
+        System.out.println("3 - Water Pokemon");
+        int typeInt = input.nextInt();
+        while (typeInt < 1 || typeInt > THREE) {
+            System.out.println("Sorry, you must pick either 1, 2, or 3.");
+            typeInt = input.nextInt();
+        }
+        System.out.print("Please name your Pokemon: ");
+        returnPokemon.setName(input.next());
+        System.out.println();
+        System.out.print("How many hit points will it have? (1-50): ");
+        int hitPoints = input.nextInt();
+        System.out.println();
+        while (hitPoints < 1 || hitPoints > MAX_HIT_POINTS) {
+            System.out.println("Sorry, hit points must be between 1 and 50.");
+            System.out.print("How many hit points will it have? (1-50): ");
+            hitPoints = input.nextInt();
+            System.out.println();
+        }
+        returnPokemon.setHitPoints(hitPoints);
+        System.out.println("Split " + hitPoints
+                + " points between attack level and defense level.");
+        System.out.print("What will the attack level be? (1-" + hitPoints + "): ");
+        int attack = input.nextInt();
+        System.out.println();
+        while (attack < 1 || attack > hitPoints) {
+            System.out.println("Sorry, attack level must be between 1 and " + hitPoints);
+            System.out.print("What will the attack level be? (1-" + hitPoints + "): ");
+            attack = input.nextInt();
+            System.out.println();
+        }
+        System.out.print("What will the defense level be? (1-" + (hitPoints - attack) + "): ");
+        int defense = input.nextInt();
+        System.out.println();
+        while (defense < 1 || defense > hitPoints - attack) {
+            System.out.println("Sorry, defense level must be between 1 and "
+        + (hitPoints - attack));
+            System.out.print("What will the defense level be? (1-" + (hitPoints - attack) + "): ");
+            defense = input.nextInt();
+            System.out.println();
+        }
+        returnPokemon.setAttackLevel(attack);
+        returnPokemon.setDefenseLevel(defense);
+        if (typeInt == 1) {
+            ElectricPokemon finalPokemon = (ElectricPokemon) returnPokemon;
+            return finalPokemon;
+        } else if (typeInt == 2) {
+            FirePokemon finalPokemon = (FirePokemon) returnPokemon;
+            return finalPokemon;
+        } else {
+            WaterPokemon finalPokemon = (WaterPokemon) returnPokemon;
+            return finalPokemon;
+        }
     }
 
     /**
